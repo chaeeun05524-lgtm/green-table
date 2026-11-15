@@ -46,7 +46,7 @@ if (!d) {
         '<div class="stamp small">' + stampDate(d.date) + '</div>' +
       '</div>' +
       '<h2 class="sec-title">만난 순간</h2>' +
-      '<p class="story">' + d.story + '</p>' +
+      '<p class="story">' + (d.story || '<span class="mute">기록 준비 중</span>') + '</p>' +
       '<h2 class="sec-title">그때의 흔적</h2>' +
       '<div class="traces">' + traceHtml + '</div>' +
       '<h2 class="sec-title">짧은 정보</h2>' +
