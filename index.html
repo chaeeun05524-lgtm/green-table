@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>그린 식탁</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 공통 머리말 -->
+  <header class="site-header">
+    <a href="index.html" class="logo">그린 식탁</a>
+    <span class="subtitle">색연필로 기록한 디저트의 순간</span>
+    <nav class="menu">
+      <a href="category.html">분류</a>
+      <a href="about.html">소개</a>
+      <a href="about.html#process">그리는 과정</a>
+    </nav>
+  </header>
+
+  <!-- 식탁: 디저트와 연결선은 js/home.js가 채움 -->
+  <main class="table">
+    <svg class="lines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+  </main>
+
+  <!-- 하단 색인 -->
+  <section class="colophon">
+    <div>
+      <h1>그린 식탁</h1>
+      <p class="tag">GREEN TABLE | NO. 001</p>
+      <p class="tag mute">색연필 · 종이 · 기억</p>
+    </div>
+    <p class="index-list" id="indexList"></p>
+    <div class="stamp" id="stamp"></div>
+  </section>
+
+  <script src="js/data.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>
