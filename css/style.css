@@ -11,7 +11,8 @@
   --red: #D8432F;     /* 번호·도장·구분선 */
   --sans: 'Noto Sans KR', sans-serif;
   --mono: 'Nanum Gothic Coding', monospace;
-  --hand: 'Gaegu', cursive;                 /* 크레용으로 쓴 듯한 손글씨 */
+  --hand: 'Nanum Pen Script', cursive;      /* 본문: 펜으로 휘갈긴 손글씨 */
+  --title: 'East Sea Dokdo', cursive;       /* 제목: 크레용·마커처럼 거친 글씨 */
 
   /* 러프한 질감 (그림 파일 없이 코드로 만든 무늬) */
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.3 0 0 0 0 0.22 0.55 0 0 0 -0.24'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");        /* 종이 알갱이 */
@@ -28,7 +29,7 @@ body {
   background-image: var(--grain), var(--fiber);   /* 미색 종이 위에 알갱이·섬유결 */
   color: var(--ink);
   font-family: var(--hand);
-  font-size: 18px;
+  font-size: 22px;
   line-height: 1.6;
 }
 
@@ -60,11 +61,11 @@ img { display: block; max-width: 100%; }
   background: var(--crayon) center / 100% 100% no-repeat;
 }
 
-.logo { font-size: 32px; font-weight: 700; letter-spacing: -2px; }
+.logo { font-family: var(--title); font-size: 42px; line-height: 1; }
 
 .subtitle {
   font-family: var(--hand);
-  font-size: 18px;
+  font-size: 22px;
   color: var(--mute);
 }
 
@@ -72,9 +73,8 @@ img { display: block; max-width: 100%; }
   margin-left: auto;
   display: flex;
   gap: 32px;
-  font-family: var(--hand);
-  font-size: 21px;
-  font-weight: 700;
+  font-family: var(--title);
+  font-size: 26px;
 }
 
 .menu a:hover,
@@ -213,7 +213,7 @@ img { display: block; max-width: 100%; }
   background: #fff;
   border: 1.5px solid var(--red);
   color: var(--red);
-  font: 700 clamp(14px, 2vw, 18px) / 1 var(--hand);
+  font: clamp(16px, 2.3vw, 22px) / 1 var(--title);
 }
 
 /* 마우스 올리면 뜨는 쪽지 (마우스를 따라다님) */
@@ -226,7 +226,7 @@ img { display: block; max-width: 100%; }
   border: 1px solid var(--red);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  font: 700 18px / 1.4 var(--hand);
+  font: 22px / 1.2 var(--title);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
@@ -248,7 +248,7 @@ img { display: block; max-width: 100%; }
   background: var(--crayon) top / 100% 12px no-repeat;
 }
 
-.colophon h1 { font-size: 46px; line-height: 1.1; letter-spacing: -3px; }
+.colophon h1 { font-family: var(--title); font-weight: 400; font-size: 60px; line-height: 1; }
 .colophon .tag { font-family: var(--mono); font-size: 12px; color: var(--red); margin-top: 6px; }
 .colophon .tag.mute { color: var(--mute); margin-top: 0; }
 
@@ -297,7 +297,7 @@ img { display: block; max-width: 100%; }
 .zoom-wrap figcaption {
   margin-top: 8px;
   text-align: center;
-  font: 16px var(--hand);
+  font: 20px var(--hand);
   color: var(--mute);
 }
 
@@ -308,11 +308,11 @@ img { display: block; max-width: 100%; }
   gap: 16px;
 }
 
-.detail-text h1 { font-size: 48px; line-height: 1.1; letter-spacing: -3px; }
+.detail-text h1 { font-family: var(--title); font-weight: 400; font-size: 64px; line-height: 1; }
 .meta { font: 13px var(--mono); color: var(--mute); margin-top: 4px; }
 
 .sec-title {
-  font: 700 20px var(--hand);
+  font: 26px var(--title);
   color: var(--red);
   margin: 32px 0 8px;
 }
@@ -320,7 +320,7 @@ img { display: block; max-width: 100%; }
 .sec-title::after { content: ' ////////'; }
 
 .story {
-  font: 19px / 1.8 var(--hand);
+  font: 24px / 1.6 var(--hand);
   color: #4A4945;
   white-space: pre-line;   /* data.js의 \n을 줄바꿈으로 */
 }
@@ -368,7 +368,7 @@ img { display: block; max-width: 100%; }
   margin: 0 48px 48px;
   padding-top: 20px;
   background: var(--crayon) top / 100% 12px no-repeat;
-  font: 700 18px var(--hand);
+  font: 22px var(--title);
 }
 
 .detail-nav a:hover { color: var(--red); }
@@ -389,7 +389,7 @@ img { display: block; max-width: 100%; }
   border-radius: 999px;
   background: transparent;
   color: var(--ink);
-  font: 700 19px var(--hand);
+  font: 24px var(--title);
   cursor: pointer;
 }
 
@@ -404,7 +404,7 @@ img { display: block; max-width: 100%; }
   border-radius: 12px;
 }
 
-.group h2 { font: 700 21px var(--hand); color: var(--red); margin-bottom: 14px; }
+.group h2 { font: 26px var(--title); color: var(--red); margin-bottom: 14px; }
 .group h2 em { font-style: normal; font-weight: 400; color: var(--mute); }
 
 .group-items { display: flex; align-items: center; flex-wrap: wrap; }
@@ -421,7 +421,7 @@ img { display: block; max-width: 100%; }
 
 .mini:hover img { transform: scale(1.07); }
 .mini span { display: block; margin-top: 8px; font: 700 12px var(--mono); color: var(--red); }
-.mini small { display: block; font-size: 17px; }
+.mini small { display: block; font-size: 22px; }
 
 .link-line {
   width: 28px;
@@ -436,7 +436,7 @@ img { display: block; max-width: 100%; }
    소개 · 그리는 과정
    ========================================================= */
 .about { max-width: 720px; margin: 24px auto 72px; padding: 0 24px; }
-.about p { font-size: 20px; line-height: 1.8; margin-bottom: 12px; }
+.about p { font-size: 25px; line-height: 1.6; margin-bottom: 12px; }
 .about strong { color: var(--red); }
 
 .process {
@@ -456,14 +456,14 @@ img { display: block; max-width: 100%; }
   overflow: hidden;
   background: #fff;
   border: 1px solid var(--line);
-  font: 16px var(--hand);
+  font: 20px var(--hand);
   color: var(--mute);
 }
 
 .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
-.step figcaption { margin-top: 8px; text-align: center; font: 18px var(--hand); }
-.arrow { color: var(--red); font: 700 24px var(--hand); }
+.step figcaption { margin-top: 8px; text-align: center; font: 24px var(--hand); }
+.arrow { color: var(--red); font: 28px var(--title); }
 
 
 /* =========================================================
