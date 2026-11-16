@@ -11,14 +11,24 @@
   --red: #D8432F;     /* 번호·도장·구분선 */
   --sans: 'Noto Sans KR', sans-serif;
   --mono: 'Nanum Gothic Coding', monospace;
+  --hand: 'Gaegu', cursive;                 /* 크레용으로 쓴 듯한 손글씨 */
+
+  /* 러프한 질감 (그림 파일 없이 코드로 만든 무늬) */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.3 0 0 0 0 0.22 0.55 0 0 0 -0.24'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");        /* 종이 알갱이 */
+  --fiber: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02 0.22' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.38 0 0 0 0 0.28 0.35 0 0 0 -0.17'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");        /* 종이 섬유결 */
+  --speck: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 0.98 2.6 0 0 0 -1.25'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");        /* 크레용이 덜 묻은 흰 틈 */
+  --crayon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 16' preserveAspectRatio='none'%3E%3Cfilter id='r' x='-2%25' y='-80%25' width='104%25' height='260%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.03 0.8' numOctaves='2' seed='4' result='t'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='t' scale='4' result='d'/%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5 1.6' numOctaves='2' seed='11' result='g'/%3E%3CfeColorMatrix in='g' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -3 2.1' result='m'/%3E%3CfeComposite in='d' in2='m' operator='in'/%3E%3C/filter%3E%3Cg filter='url(%23r)' fill='none' stroke='%23D8432F' stroke-linecap='round'%3E%3Cpath d='M4 8 C 250 6, 520 10, 800 7 S 1100 9, 1196 7' stroke-width='5'/%3E%3Cpath d='M60 9 C 400 8, 700 6, 1150 9' stroke-width='2.5' opacity='0.7'/%3E%3C/g%3E%3C/svg%3E");      /* 크레용 선 */
+  --rough: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2.6 0 0 0 2.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");    /* 도장 잉크 번짐 */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  background: var(--paper);
+  background-color: var(--paper);
+  background-image: var(--grain), var(--fiber);   /* 미색 종이 위에 알갱이·섬유결 */
   color: var(--ink);
-  font-family: var(--sans);
+  font-family: var(--hand);
+  font-size: 18px;
   line-height: 1.6;
 }
 
@@ -35,15 +45,26 @@ img { display: block; max-width: 100%; }
   align-items: baseline;
   gap: 24px;
   margin: 0 48px;
-  padding: 28px 0 16px;
-  border-bottom: 1px solid var(--red);
+  padding: 28px 0 18px;
+  position: relative;
 }
 
-.logo { font-size: 22px; font-weight: 700; }
+/* 머리말 아래 크레용 선 */
+.site-header::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  height: 14px;
+  background: var(--crayon) center / 100% 100% no-repeat;
+}
+
+.logo { font-size: 32px; font-weight: 700; letter-spacing: -2px; }
 
 .subtitle {
-  font-family: var(--mono);
-  font-size: 13px;
+  font-family: var(--hand);
+  font-size: 18px;
   color: var(--mute);
 }
 
@@ -51,8 +72,9 @@ img { display: block; max-width: 100%; }
   margin-left: auto;
   display: flex;
   gap: 32px;
-  font-family: var(--mono);
-  font-size: 14px;
+  font-family: var(--hand);
+  font-size: 21px;
+  font-weight: 700;
 }
 
 .menu a:hover,
@@ -71,6 +93,8 @@ img { display: block; max-width: 100%; }
   transform: rotate(-3deg);
   opacity: 0.85;
   white-space: nowrap;
+  -webkit-mask-image: var(--rough);   /* 잉크가 덜 묻은 듯한 도장 */
+  mask-image: var(--rough);
 }
 
 .stamp.small { font-size: 16px; }
@@ -105,10 +129,12 @@ img { display: block; max-width: 100%; }
 
   background-color: #FFFDF8;
   background-image:
+    var(--speck),   /* 크레용으로 칠한 듯한 거친 결 */
     radial-gradient(circle closest-side, transparent 70%, rgba(60, 20, 10, 0.22) 100%),
     linear-gradient(90deg, var(--check) 50%, transparent 50%),
     linear-gradient(var(--check) 50%, transparent 50%);
   background-size:
+    200px 200px,
     100% 100%,
     var(--check-size) var(--check-size),
     var(--check-size) var(--check-size);
@@ -187,7 +213,7 @@ img { display: block; max-width: 100%; }
   background: #fff;
   border: 1.5px solid var(--red);
   color: var(--red);
-  font: 700 clamp(11px, 1.6vw, 14px) / 1 var(--mono);
+  font: 700 clamp(14px, 2vw, 18px) / 1 var(--hand);
 }
 
 /* 마우스 올리면 뜨는 쪽지 (마우스를 따라다님) */
@@ -200,7 +226,7 @@ img { display: block; max-width: 100%; }
   border: 1px solid var(--red);
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  font: 700 13px / 1.5 var(--mono);
+  font: 700 18px / 1.4 var(--hand);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
@@ -218,11 +244,11 @@ img { display: block; max-width: 100%; }
   gap: 32px;
   align-items: end;
   margin: 0 48px 48px;
-  padding-top: 24px;
-  border-top: 1px solid var(--line);
+  padding-top: 28px;
+  background: var(--crayon) top / 100% 12px no-repeat;
 }
 
-.colophon h1 { font-size: 32px; line-height: 1.2; }
+.colophon h1 { font-size: 46px; line-height: 1.1; letter-spacing: -3px; }
 .colophon .tag { font-family: var(--mono); font-size: 12px; color: var(--red); margin-top: 6px; }
 .colophon .tag.mute { color: var(--mute); margin-top: 0; }
 
@@ -271,7 +297,7 @@ img { display: block; max-width: 100%; }
 .zoom-wrap figcaption {
   margin-top: 8px;
   text-align: center;
-  font: 12px var(--mono);
+  font: 16px var(--hand);
   color: var(--mute);
 }
 
@@ -282,19 +308,19 @@ img { display: block; max-width: 100%; }
   gap: 16px;
 }
 
-.detail-text h1 { font-size: 34px; line-height: 1.3; }
+.detail-text h1 { font-size: 48px; line-height: 1.1; letter-spacing: -3px; }
 .meta { font: 13px var(--mono); color: var(--mute); margin-top: 4px; }
 
 .sec-title {
-  font: 700 13px var(--mono);
+  font: 700 20px var(--hand);
   color: var(--red);
-  margin: 32px 0 10px;
+  margin: 32px 0 8px;
 }
 
 .sec-title::after { content: ' ////////'; }
 
 .story {
-  font: 14px / 1.9 var(--mono);
+  font: 19px / 1.8 var(--hand);
   color: #4A4945;
   white-space: pre-line;   /* data.js의 \n을 줄바꿈으로 */
 }
@@ -340,9 +366,9 @@ img { display: block; max-width: 100%; }
   align-items: center;
   gap: 16px;
   margin: 0 48px 48px;
-  padding-top: 16px;
-  border-top: 1px solid var(--red);
-  font: 700 13px var(--mono);
+  padding-top: 20px;
+  background: var(--crayon) top / 100% 12px no-repeat;
+  font: 700 18px var(--hand);
 }
 
 .detail-nav a:hover { color: var(--red); }
@@ -363,7 +389,7 @@ img { display: block; max-width: 100%; }
   border-radius: 999px;
   background: transparent;
   color: var(--ink);
-  font: 14px var(--mono);
+  font: 700 19px var(--hand);
   cursor: pointer;
 }
 
@@ -378,7 +404,7 @@ img { display: block; max-width: 100%; }
   border-radius: 12px;
 }
 
-.group h2 { font: 700 14px var(--mono); color: var(--red); margin-bottom: 14px; }
+.group h2 { font: 700 21px var(--hand); color: var(--red); margin-bottom: 14px; }
 .group h2 em { font-style: normal; font-weight: 400; color: var(--mute); }
 
 .group-items { display: flex; align-items: center; flex-wrap: wrap; }
@@ -395,7 +421,7 @@ img { display: block; max-width: 100%; }
 
 .mini:hover img { transform: scale(1.07); }
 .mini span { display: block; margin-top: 8px; font: 700 12px var(--mono); color: var(--red); }
-.mini small { display: block; font-size: 12px; }
+.mini small { display: block; font-size: 17px; }
 
 .link-line {
   width: 28px;
@@ -410,7 +436,7 @@ img { display: block; max-width: 100%; }
    소개 · 그리는 과정
    ========================================================= */
 .about { max-width: 720px; margin: 24px auto 72px; padding: 0 24px; }
-.about p { font-size: 15px; line-height: 1.9; margin-bottom: 12px; }
+.about p { font-size: 20px; line-height: 1.8; margin-bottom: 12px; }
 .about strong { color: var(--red); }
 
 .process {
@@ -430,14 +456,14 @@ img { display: block; max-width: 100%; }
   overflow: hidden;
   background: #fff;
   border: 1px solid var(--line);
-  font: 12px var(--mono);
+  font: 16px var(--hand);
   color: var(--mute);
 }
 
 .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
-.step figcaption { margin-top: 8px; text-align: center; font: 13px var(--mono); }
-.arrow { color: var(--red); font: 700 18px var(--mono); }
+.step figcaption { margin-top: 8px; text-align: center; font: 18px var(--hand); }
+.arrow { color: var(--red); font: 700 24px var(--hand); }
 
 
 /* =========================================================
