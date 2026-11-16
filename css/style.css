@@ -80,13 +80,27 @@ img { display: block; max-width: 100%; }
    홈: 위에서 본 동그란 체크무늬 식탁
    ========================================================= */
 .table {
-  --check: rgba(216, 67, 47, 0.4);  /* 체크 색 진하기 (0~1) */
-  --check-size: 44px;               /* 체크 한 칸 크기 */
+  --spin-time: 120s;   /* 한 바퀴 도는 데 걸리는 시간 (작을수록 빠름) */
 
-  position: relative;               /* 디저트를 이 위에 올리는 기준 */
+  position: relative;
   width: min(85vw, 760px);
   aspect-ratio: 1 / 1;
   margin: 56px auto 48px;
+  border-radius: 50%;
+
+  /* 그림자는 돌지 않는 바깥 틀에 둠 (같이 돌면 그림자가 빙빙 돌아서) */
+  box-shadow:
+    0 18px 40px rgba(60, 30, 20, 0.22),
+    0 4px 10px rgba(60, 30, 20, 0.12);
+}
+
+/* 돌아가는 식탁보 (체크무늬 + 디저트 + 연결선) */
+.spin {
+  --check: rgba(216, 67, 47, 0.4);  /* 체크 색 진하기 (0~1) */
+  --check-size: 44px;               /* 체크 한 칸 크기 */
+
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
 
   background-color: #FFFDF8;
@@ -99,11 +113,30 @@ img { display: block; max-width: 100%; }
     var(--check-size) var(--check-size),
     var(--check-size) var(--check-size);
   background-position: center;
+  box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.35);
 
-  box-shadow:
-    inset 0 0 0 10px rgba(255, 255, 255, 0.35),
-    0 18px 40px rgba(60, 30, 20, 0.22),
-    0 4px 10px rgba(60, 30, 20, 0.12);
+  animation: spin var(--spin-time) linear infinite;
+}
+
+@keyframes spin   { to { rotate: 360deg; } }
+@keyframes unspin { to { rotate: -360deg; } }
+
+/* 번호는 반대로 돌려서 항상 똑바로 읽히게 */
+.num {
+  animation: unspin var(--spin-time) linear infinite;
+}
+
+/* 식탁에 마우스를 올리면 멈춤 → 그림 누르기 쉽게 */
+.table:hover .spin,
+.table:hover .num,
+.table:focus-within .spin,
+.table:focus-within .num {
+  animation-play-state: paused;
+}
+
+/* 움직임 줄이기 설정을 켠 사람에겐 회전 안 함 */
+@media (prefers-reduced-motion: reduce) {
+  .spin, .num { animation: none; }
 }
 
 /* 연결선: 같은 장소에서 만난 디저트끼리 */
@@ -157,12 +190,11 @@ img { display: block; max-width: 100%; }
   font: 700 clamp(11px, 1.6vw, 14px) / 1 var(--mono);
 }
 
-/* 마우스 올리면 뜨는 쪽지 */
+/* 마우스 올리면 뜨는 쪽지 (마우스를 따라다님) */
 .note {
   position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, 8px);
+  z-index: 10;
+  transform: translate(-50%, 20px);   /* 마우스 바로 아래 */
   padding: 6px 12px;
   background: #fff;
   border: 1px solid var(--red);
@@ -177,9 +209,7 @@ img { display: block; max-width: 100%; }
 
 .note b { color: var(--red); margin-right: 8px; }
 .note span { display: block; font-weight: 400; font-size: 11px; color: var(--mute); }
-
-.dish:hover .note,
-.dish:focus-visible .note { opacity: 1; }
+.note.show { opacity: 1; }
 
 /* 하단 색인 */
 .colophon {

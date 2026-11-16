@@ -1,6 +1,6 @@
 /* 홈: 식탁 위에 디저트 올리기 */
 
-const table = document.querySelector('.table');
+const table = document.querySelector('.spin');  // 회전하는 식탁보 위에 올림
 const svg = document.querySelector('.lines');
 
 // 1. 연결선: 같은 '장소'에서 만난 디저트끼리 번호 순서대로 잇기
@@ -30,14 +30,46 @@ DESSERTS.forEach(function (d) {
 
   dish.innerHTML =
     '<img src="' + d.image + '" alt="' + d.name + '">' +
-    '<span class="num">' + d.id + '</span>' +
-    '<span class="note">' +
-      '<b>' + pad(d.id) + '</b>' + d.name +
-      '<span>' + d.place + ' · ' + d.date + ' · ' + d.memory + '</span>' +
-    '</span>';
+    '<span class="num">' + d.id + '</span>';
+
+  // 마우스를 올리면 쪽지 내용 바꾸고 보이기
+  const noteHtml =
+    '<b>' + pad(d.id) + '</b>' + d.name +
+    '<span>' + d.place + ' · ' + d.date + ' · ' + d.memory + '</span>';
+
+  dish.addEventListener('mouseenter', function () { showTip(noteHtml); });
+  dish.addEventListener('mousemove', function (e) { moveTip(e.clientX, e.clientY); });
+  dish.addEventListener('mouseleave', hideTip);
+  dish.addEventListener('focus', function () {   // 키보드(Tab)로 이동할 때
+    const r = dish.getBoundingClientRect();
+    showTip(noteHtml);
+    moveTip(r.left + r.width / 2, r.bottom);
+  });
+  dish.addEventListener('blur', hideTip);
 
   table.appendChild(dish);
 });
+
+// 쪽지: 식탁은 돌아도 쪽지는 돌지 않게, 회전하지 않는 바깥 틀(.table)에 하나만 둠
+const frame = document.querySelector('.table');
+const tip = document.createElement('div');
+tip.className = 'note';
+frame.appendChild(tip);
+
+function showTip(html) {
+  tip.innerHTML = html;
+  tip.classList.add('show');
+}
+
+function moveTip(x, y) {   // 마우스 위치 바로 아래에 쪽지 놓기
+  const r = frame.getBoundingClientRect();
+  tip.style.left = (x - r.left) + 'px';
+  tip.style.top = (y - r.top) + 'px';
+}
+
+function hideTip() {
+  tip.classList.remove('show');
+}
 
 // 3. 하단 색인 (타자기체 목록)
 const list = document.getElementById('indexList');
