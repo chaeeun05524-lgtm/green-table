@@ -7,8 +7,7 @@
    id      : 번호 (겹치지 않게)
    image   : images 폴더에 넣은 그림 파일
    x, y    : 식탁 위 위치 (0~100). 50, 50이 식탁 한가운데
-   spot    : 'floor'라고 쓰면 식탁 밖 종이 위에 놓임 (위치는 자동으로 정해져서 x, y 필요 없음)
-   size    : 그림 너비 (식탁 너비의 몇 %인지)
+   size    : 그림 크기 (식탁 너비의 몇 %인지)
    rotate  : 살짝 돌리기 (도). 0이면 그대로
    date    : 먹은 날짜 '연.월.일' 형식 (비워두면 안 보임, 가장 최근 날짜가 날짜 도장에 찍힘)
    story   : 만난 순간. 줄을 바꾸려면 \n
@@ -40,7 +39,7 @@ const DESSERTS = [
     name: '새우튀김 우동',
     en: 'Tempura udon',
     image: 'images/udon.webp',
-    x: 54.9, y: 26.0, size: 16.8, rotate: 0,
+    x: 55.2, y: 24.5, size: 16.8, rotate: 0,
     date: '',
     place: '장소',
     who: '누구와',
@@ -70,7 +69,7 @@ const DESSERTS = [
     name: '크루아상',
     en: 'Croissant',
     image: 'images/croissant.webp',
-    x: 69.2, y: 34.7, size: 17.6, rotate: -5,
+    x: 71.2, y: 35.2, size: 17.6, rotate: -5,
     date: '',
     place: '장소',
     who: '누구와',
@@ -100,7 +99,7 @@ const DESSERTS = [
     name: '브라우니 선데',
     en: 'Brownie sundae',
     image: 'images/sundae.webp',
-    x: 74.5, y: 50.6, size: 10.6, rotate: 8,
+    x: 74.7, y: 51.5, size: 10.6, rotate: 8,
     date: '',
     place: '장소',
     who: '누구와',
@@ -190,7 +189,7 @@ const DESSERTS = [
     name: '피자',
     en: 'Pizza',
     image: 'images/pizza.webp',
-    x: 37.2, y: 70.9, size: 16.2, rotate: -12,
+    x: 37.7, y: 71.5, size: 16.2, rotate: -12,
     date: '',
     place: '장소',
     who: '누구와',
@@ -220,7 +219,7 @@ const DESSERTS = [
     name: '체리 케이크',
     en: 'Cherry cake',
     image: 'images/cherrycake.webp',
-    x: 26.8, y: 57.8, size: 16.2, rotate: 5,
+    x: 26.3, y: 58.2, size: 16.2, rotate: 5,
     date: '',
     place: '장소',
     who: '누구와',
@@ -235,7 +234,7 @@ const DESSERTS = [
     name: '토마토',
     en: 'Tomato',
     image: 'images/tomato.webp',
-    x: 11.0, y: 49.0, size: 11.7, rotate: -5,
+    x: 11.2, y: 49.0, size: 11.7, rotate: -5,
     date: '',
     place: '장소',
     who: '누구와',
@@ -250,7 +249,7 @@ const DESSERTS = [
     name: '에그 토스트',
     en: 'Egg toast',
     image: 'images/eggtoast.webp',
-    x: 27.2, y: 41.0, size: 12.7, rotate: 12,
+    x: 26.5, y: 40.9, size: 12.7, rotate: 12,
     date: '',
     place: '장소',
     who: '누구와',
@@ -280,7 +279,7 @@ const DESSERTS = [
     name: '식빵 토스트',
     en: 'Toast',
     image: 'images/toast.webp',
-    x: 38.3, y: 28.5, size: 14.4, rotate: -12,
+    x: 36.9, y: 28.0, size: 14.4, rotate: -12,
     date: '',
     place: '장소',
     who: '누구와',
@@ -295,7 +294,7 @@ const DESSERTS = [
     name: '단호박',
     en: 'Kabocha',
     image: 'images/pumpkin.webp',
-    x: 44.2, y: 11.4, size: 13.5, rotate: -8,
+    x: 43.9, y: 11.5, size: 13.5, rotate: -8,
     date: '',
     place: '장소',
     who: '누구와',

@@ -142,13 +142,51 @@ function layoutFloor() {
     // 살짝 흐트러뜨리기
     x += ((f.d.id * 37) % 21 - 10) / 100 * step;
     y += ((f.d.id * 53) % 21 - 10) / 100 * step;
-    f.el.style.left = x + 'px';
-    f.el.style.top = y + 'px';
+    f.x = x;
+    f.y = y;
     f.el.style.width = (T * f.d.size / 100) + 'px';
+  });
+
+  // 겹치는 그림은 서로 살살 밀어내기 (식탁과도 겹치지 않게)
+  floorDishes.forEach(function (f) {
+    const w = f.el.offsetWidth;
+    const h = f.el.offsetHeight || w;
+    f.r = Math.sqrt(w * h) / 2 + 6;
+  });
+  for (let it = 0; it < 200; it++) {
+    for (let i = 0; i < floorDishes.length; i++) {
+      for (let j = i + 1; j < floorDishes.length; j++) {
+        const a = floorDishes[i];
+        const b = floorDishes[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const d = Math.hypot(dx, dy) || 0.01;
+        const over = a.r + b.r - d;
+        if (over > 0) {
+          a.x -= dx / d * over / 2; a.y -= dy / d * over / 2;
+          b.x += dx / d * over / 2; b.y += dy / d * over / 2;
+        }
+      }
+    }
+    floorDishes.forEach(function (f) {
+      const dx = f.x - cx;
+      const dy = f.y - cy;
+      const d = Math.hypot(dx, dy);
+      const min = T / 2 + f.r * 0.8;
+      if (d < min) { f.x = cx + dx / d * min; f.y = cy + dy / d * min; }
+      f.x = Math.min(Math.max(f.x, f.r * 0.6), W - f.r * 0.6);
+      f.y = Math.min(Math.max(f.y, f.r * 0.6), H - f.r * 0.6);
+    });
+  }
+
+  floorDishes.forEach(function (f) {
+    f.el.style.left = f.x + 'px';
+    f.el.style.top = f.y + 'px';
   });
 }
 
 layoutFloor();
+window.addEventListener('load', layoutFloor);     // 그림이 다 불러와지면 크기에 맞춰 다시
 window.addEventListener('resize', layoutFloor);
 
 // 3-1. 식탁 밖 연결선: 식탁 위 마지막 그림 → 식탁 밖 그림들을 번호 순서대로 잇기
