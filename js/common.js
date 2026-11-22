@@ -24,11 +24,23 @@ function pad(n) {
 
 // 가장 최근 날짜 ('2026.10.03' 형식은 글자 순서로 정렬해도 날짜 순서가 맞음)
 function latestDate() {
-  return DESSERTS.map(function (d) { return d.date; }).sort().pop();
+  return DESSERTS.map(function (d) { return d.date; }).filter(Boolean).sort().pop() || '';
 }
 
 // '2026.10.03' → '3 OCT. 2026' (날짜 도장 모양)
+// 오늘 날짜를 '2026.11.22' 형식으로
+function todayText() {
+  const t = new Date();
+  return t.getFullYear() + '.' + (t.getMonth() + 1) + '.' + t.getDate();
+}
+
+// 비어 있는 칸은 빼고 ' · '로 잇기
+function joinParts(parts) {
+  return parts.filter(Boolean).join(' · ');
+}
+
 function stampDate(dateText) {
+  if (!dateText) return '';
   const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
                   'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
   const parts = dateText.split('.');

@@ -35,7 +35,7 @@ DESSERTS.forEach(function (d) {
   // 마우스를 올리면 쪽지 내용 바꾸고 보이기
   const noteHtml =
     '<b>' + pad(d.id) + '</b>' + d.name +
-    '<span>' + d.place + ' · ' + d.date + ' · ' + d.memory + '</span>';
+    '<span>' + joinParts([d.place, d.date, d.memory]) + '</span>';
 
   dish.addEventListener('mouseenter', function () { showTip(noteHtml); });
   dish.addEventListener('mousemove', function (e) { moveTip(e.clientX, e.clientY); });
@@ -76,11 +76,14 @@ const list = document.getElementById('indexList');
 let html = '<span class="lead">직접 먹고 그린 디저트들, 내가 만난 곳과 순간을 따라 모음 ////////</span><br>';
 DESSERTS.forEach(function (d) {
   html += '<a href="detail.html?id=' + d.id + '">' +
-          d.id + '. ' + d.name + ' (' + d.place + '), ' + d.date + ', ' + d.memory +
+          d.id + '. ' + d.name + ' (' + d.place + '), ' + joinParts([d.date, d.memory]).replace(' · ', ', ') +
           '</a> | ';
 });
 html += '<span class="lead">//////// 다음 접시: 준비 중</span>';
 list.innerHTML = html;
 
 // 4. 날짜 도장: 가장 최근에 기록한 날짜
-document.getElementById('stamp').textContent = stampDate(latestDate());
+const stamp = document.getElementById('stamp');
+const last = latestDate();
+if (last) stamp.textContent = stampDate(last);
+else stamp.textContent = stampDate(todayText());   // 날짜를 아직 안 적었으면 오늘 날짜

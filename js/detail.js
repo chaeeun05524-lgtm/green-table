@@ -41,9 +41,9 @@ if (!d) {
       '<div class="detail-head">' +
         '<div>' +
           '<h1>' + d.name + '</h1>' +
-          '<p class="meta">' + d.en + '  |  ' + d.place + ' · ' + d.date + ' · ' + d.who + '</p>' +
+          '<p class="meta">' + d.en + '  |  ' + joinParts([d.place, d.date, d.who]) + '</p>' +
         '</div>' +
-        '<div class="stamp small">' + stampDate(d.date) + '</div>' +
+        (d.date ? '<div class="stamp small">' + stampDate(d.date) + '</div>' : '') +
       '</div>' +
       '<h2 class="sec-title">만난 순간</h2>' +
       '<p class="story">' + (d.story || '<span class="mute">기록 준비 중</span>') + '</p>' +
