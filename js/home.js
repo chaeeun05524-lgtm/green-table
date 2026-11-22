@@ -9,16 +9,21 @@ const onTable = DESSERTS.filter(function (d) { return d.spot !== 'floor'; });
 const onFloor = DESSERTS.filter(function (d) { return d.spot === 'floor'; });
 
 // 1. 식탁 위 연결선: 번호 순서대로 한 줄로 잇기 (식탁보와 함께 돎)
-for (let i = 0; i < onTable.length - 1; i++) {
-  const a = onTable[i];
-  const b = onTable[i + 1];
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-  line.setAttribute('x1', a.x);
-  line.setAttribute('y1', a.y);
-  line.setAttribute('x2', b.x);
-  line.setAttribute('y2', b.y);
-  svg.appendChild(line);
+//    (그림을 옮기면 drag.js가 다시 부름)
+function drawTableLines() {
+  svg.innerHTML = '';
+  for (let i = 0; i < onTable.length - 1; i++) {
+    const a = onTable[i];
+    const b = onTable[i + 1];
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', a.x);
+    line.setAttribute('y1', a.y);
+    line.setAttribute('x2', b.x);
+    line.setAttribute('y2', b.y);
+    svg.appendChild(line);
+  }
 }
+drawTableLines();
 
 // 2. 그림 한 점 만들기 (빨간 번호 + 마우스 올리면 쪽지)
 function makeDish(d) {
@@ -70,7 +75,8 @@ const floorDishes = onFloor.map(function (d) {
   const dish = makeDish(d);
   dish.classList.add('floor');
   scene.appendChild(dish);
-  return { d: d, el: dish };
+  dish.floorItem = { d: d, el: dish };
+  return dish.floorItem;
 });
 
 // 3. 식탁 밖 그림 배치: 식탁과 겹치지 않는 빈 자리를 찾아 고르게 흩어 놓기
@@ -271,17 +277,37 @@ const params = new URLSearchParams(location.search);
   scene.parentNode.insertBefore(chip, scene);
 });
 
-// 5. 하단 색인 (타자기체 목록)
-const list = document.getElementById('indexList');
-let html = '<span class="lead">직접 먹고 그린 음식들, 내가 만난 곳과 순간을 따라 모음 ////////</span><br>';
+// 5. 하단 색인: 영수증 (품목 = 음식, 가격 대신 장소·날짜)
+const receipt = document.getElementById('receipt');
+const told = DESSERTS.filter(function (d) { return d.story; }).length;   // 이야기를 적은 접시 수
+let rows = '';
 DESSERTS.forEach(function (d) {
-  html += '<a href="detail.html?id=' + d.id + '">' +
-          d.id + '. ' + d.name + ' (' + d.place + ')' +
-          (d.date ? ', ' + d.date : '') + ', ' + d.memory +
-          '</a> | ';
+  rows +=
+    '<a class="row" href="detail.html?id=' + d.id + '">' +
+      '<span class="no">' + pad(d.id) + '</span>' +
+      '<span class="item">' + d.name + '</span>' +
+      '<span class="dots"></span>' +
+      '<span class="where">' + d.place + '</span>' +
+    '</a>' +
+    (d.date ? '<div class="sub">' + d.date + (d.memory ? ' · ' + d.memory : '') + '</div>' : '');
 });
-html += '<span class="lead">//////// 다음 접시: 준비 중</span>';
-list.innerHTML = html;
+receipt.innerHTML =
+  '<div class="r-head">' +
+    '<b>그 린 식 탁</b>' +
+    '<span>GREEN TABLE</span>' +
+    '<span>색연필 · 종이 · 기억</span>' +
+  '</div>' +
+  '<div class="r-meta"><span>NO. 001</span><span>' + todayText() + '</span></div>' +
+  '<div class="r-line"></div>' +
+  '<div class="row th"><span class="no">NO</span><span class="item">품목</span><span class="dots"></span><span class="where">만난 곳</span></div>' +
+  '<div class="r-line"></div>' +
+  rows +
+  '<div class="r-line"></div>' +
+  '<div class="row total"><span class="item">합계</span><span class="dots"></span><span class="where">' + DESSERTS.length + ' 접시</span></div>' +
+  '<div class="row"><span class="item">적어 둔 기억</span><span class="dots"></span><span class="where">' + told + ' 개</span></div>' +
+  '<div class="r-line"></div>' +
+  '<p class="r-foot">다음 접시: 준비 중<br>잘 먹었습니다 :)</p>' +
+  '<div class="barcode"></div>';
 
 // 6. 날짜 도장: 가장 최근에 기록한 날짜 (아직 없으면 오늘)
 const stamp = document.getElementById('stamp');

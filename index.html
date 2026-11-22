@@ -34,6 +34,7 @@
     <div class="table">
       <!-- 회전하는 식탁보: 식탁 위 그림과 연결선이 이 안에 올라감 -->
       <div class="spin">
+        <div class="stains"></div>   <!-- 커피 자국, 소스 얼룩, 빵 부스러기 -->
         <svg class="lines" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
       </div>
     </div>
@@ -41,17 +42,23 @@
 
   <!-- 하단 색인 -->
   <section class="colophon">
-    <div>
+    <div class="colophon-title">
       <h1>그린 식탁</h1>
       <p class="tag">GREEN TABLE | NO. 001</p>
       <p class="tag mute">색연필 · 종이 · 기억</p>
+      <p class="lead">직접 먹고 그린 음식들,<br>내가 만난 곳과 순간을 따라 모음.<br>전체 목록은 영수증으로 →</p>
     </div>
-    <p class="index-list" id="indexList"></p>
-    <div class="stamp" id="stamp"></div>
+
+    <!-- 전체 색인: 영수증 (내용은 js/home.js가 채움) -->
+    <div class="receipt-wrap">
+      <div class="receipt" id="receipt"></div>
+      <div class="stamp" id="stamp"></div>
+    </div>
   </section>
 
   <script src="js/data.js"></script>
   <script src="js/common.js"></script>
   <script src="js/home.js"></script>
+  <script src="js/drag.js"></script>
 </body>
 </html>
