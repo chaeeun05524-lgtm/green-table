@@ -279,25 +279,33 @@ img { display: block; max-width: 100%; }
   font: 700 clamp(12px, 1.7vw, 15px) / 1 var(--title);
 }
 
-/* 마우스 올리면 뜨는 쪽지 (마우스를 따라다님) */
+/* 마우스 올리면 뜨는 쪽지: 종이를 찢어낸 조각 (마우스를 따라다님) */
 .note {
   position: absolute;
   z-index: 10;
-  transform: translate(-50%, 20px);   /* 마우스 바로 아래 */
-  padding: 6px 12px;
-  background: #fff;
-  border: 1px solid var(--red);
-  border-radius: 6px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transform: translate(-50%, 22px) rotate(-2.5deg);   /* 마우스 바로 아래, 살짝 비뚤게 */
+  padding: 14px 20px 15px;
   font: 700 14px / 1.5 var(--title);
   white-space: nowrap;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
+  filter: drop-shadow(0 3px 4px rgba(60, 40, 20, 0.25));   /* 찢긴 모양을 따라 그림자 */
+}
+
+/* 찢어낸 종이 조각 (글씨 뒤에 깔림) */
+.note::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: #FFFCF4;
+  background-image: var(--grain), var(--fiber);    /* 종이 질감 */
+  clip-path: polygon(0.0% 1.5%, 3.8% 6.2%, 7.7% 5.7%, 11.5% 4.3%, 15.4% 1.9%, 19.2% 7.1%, 23.1% 7.3%, 26.9% 4.6%, 30.8% 4.5%, 34.6% 2.1%, 38.5% 0.0%, 42.3% 3.3%, 46.2% 5.3%, 50.0% 0.6%, 53.8% 7.1%, 57.7% 2.1%, 61.5% 2.1%, 65.4% 0.4%, 69.2% 9.0%, 73.1% 6.6%, 76.9% 7.9%, 80.8% 5.5%, 84.6% 0.3%, 88.5% 3.0%, 92.3% 4.5%, 96.2% 1.0%, 97.6% 0.0%, 99.1% 16.7%, 99.6% 33.3%, 98.0% 50.0%, 99.7% 66.7%, 97.7% 83.3%, 100.0% 95.5%, 96.2% 94.5%, 92.3% 96.6%, 88.5% 95.2%, 84.6% 98.1%, 80.8% 99.6%, 76.9% 91.3%, 73.1% 97.7%, 69.2% 92.2%, 65.4% 97.9%, 61.5% 90.3%, 57.7% 91.1%, 53.8% 92.5%, 50.0% 92.4%, 46.2% 94.2%, 42.3% 92.7%, 38.5% 98.8%, 34.6% 95.2%, 30.8% 91.7%, 26.9% 98.0%, 23.1% 90.8%, 19.2% 91.1%, 15.4% 95.9%, 11.5% 96.3%, 7.7% 95.5%, 3.8% 96.1%, 2.5% 100.0%, 1.0% 83.3%, 0.1% 66.7%, 0.2% 50.0%, 1.8% 33.3%, 2.5% 16.7%);   /* 위아래가 들쭉날쭉 찢긴 모양 */
 }
 
 .note b { color: var(--red); margin-right: 8px; }
-.note span { display: block; font-weight: 400; font-size: 11px; color: var(--mute); }
+.note span { display: block; font-weight: 400; font-size: 11px; color: #6E6B64; }
 .note.show { opacity: 1; }
 
 /* 하단 색인 */
