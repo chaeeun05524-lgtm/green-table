@@ -8,25 +8,17 @@ const svg = document.querySelector('.lines');
 const onTable = DESSERTS.filter(function (d) { return d.spot !== 'floor'; });
 const onFloor = DESSERTS.filter(function (d) { return d.spot === 'floor'; });
 
-// 1. 연결선: 식탁 위에서 같은 '장소'에서 만난 것끼리 번호 순서대로 잇기
-const placeGroups = {};
-onTable.forEach(function (d) {
-  const g = d.groups['장소'];
-  if (!placeGroups[g]) placeGroups[g] = [];
-  placeGroups[g].push(d);
-});
-Object.values(placeGroups).forEach(function (list) {
-  for (let i = 0; i < list.length - 1; i++) {
-    const a = list[i];
-    const b = list[i + 1];
-    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', a.x);
-    line.setAttribute('y1', a.y);
-    line.setAttribute('x2', b.x);
-    line.setAttribute('y2', b.y);
-    svg.appendChild(line);
-  }
-});
+// 1. 식탁 위 연결선: 번호 순서대로 한 줄로 잇기 (식탁보와 함께 돎)
+for (let i = 0; i < onTable.length - 1; i++) {
+  const a = onTable[i];
+  const b = onTable[i + 1];
+  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  line.setAttribute('x1', a.x);
+  line.setAttribute('y1', a.y);
+  line.setAttribute('x2', b.x);
+  line.setAttribute('y2', b.y);
+  svg.appendChild(line);
+}
 
 // 2. 그림 한 점 만들기 (빨간 번호 + 마우스 올리면 쪽지)
 function makeDish(d) {
@@ -147,6 +139,40 @@ function layoutFloor() {
 
 layoutFloor();
 window.addEventListener('resize', layoutFloor);
+
+// 3-1. 식탁 밖 연결선: 식탁 위 마지막 그림 → 식탁 밖 그림들을 번호 순서대로 잇기
+//      식탁이 돌면 끝점도 움직이니까 화면이 바뀔 때마다 다시 그림
+const outerSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+outerSvg.setAttribute('class', 'outer-lines');
+scene.insertBefore(outerSvg, scene.children[1]);   // 식탁 위, 식탁 밖 그림 아래
+
+const chain = [spin.lastElementChild].concat(floorDishes.map(function (f) { return f.el; }));
+
+function center(el, base) {
+  const r = (el.querySelector('img') || el).getBoundingClientRect();
+  return { x: r.left + r.width / 2 - base.left, y: r.top + r.height / 2 - base.top,
+           r: Math.min(r.width, r.height) * 0.42 };   // 그림 안쪽까지는 선을 안 그음
+}
+
+function drawOuterLines() {
+  const base = scene.getBoundingClientRect();
+  outerSvg.setAttribute('viewBox', '0 0 ' + base.width + ' ' + base.height);
+  let paths = '';
+  for (let i = 0; i < chain.length - 1; i++) {
+    const a = center(chain[i], base);
+    const b = center(chain[i + 1], base);
+    const len = Math.hypot(b.x - a.x, b.y - a.y);
+    if (len <= a.r + b.r) continue;
+    const ux = (b.x - a.x) / len;
+    const uy = (b.y - a.y) / len;
+    paths += '<line x1="' + (a.x + ux * a.r) + '" y1="' + (a.y + uy * a.r) +
+             '" x2="' + (b.x - ux * b.r) + '" y2="' + (b.y - uy * b.r) + '"/>';
+  }
+  outerSvg.innerHTML = paths;
+  requestAnimationFrame(drawOuterLines);
+}
+requestAnimationFrame(drawOuterLines);
+
 
 // 4. 쪽지: 회전하지 않는 바깥(.scene)에 하나만 두고 마우스를 따라다니게
 const tip = document.createElement('div');
