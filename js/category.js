@@ -27,7 +27,9 @@ function render(key) {
 
     html +=
       '<section class="group">' +
-        '<h2>' + name + ' <em>' + list.length + '</em></h2>' +
+        '<h2>' + name + ' <em>' + list.length + '</em>' +
+          '<a class="to-table" href="index.html?' + encodeURIComponent(key) + '=' + encodeURIComponent(name) + '">식탁에서 보기 →</a>' +
+        '</h2>' +
         '<div class="group-items">' + items + '</div>' +
       '</section>';
   });

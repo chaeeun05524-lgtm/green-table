@@ -26,6 +26,7 @@ function makeDish(d) {
   dish.className = 'dish';
   dish.href = 'detail.html?id=' + d.id;
   dish.style.setProperty('--rot', (d.rotate || 0) + 'deg');
+  dish.style.setProperty('--i', d.id - 1);   // 놓이는 순서
   dish.innerHTML =
     '<img src="' + d.image + '" alt="' + d.name + '">' +
     '<span class="num">' + d.id + '</span>';
@@ -44,6 +45,15 @@ function makeDish(d) {
   });
   dish.addEventListener('blur', hideTip);
   return dish;
+}
+
+// 첫 방문 때만 그림이 하나씩 놓이는 연출 (같은 창에서 다시 오면 생략)
+let played = false;
+try { played = sessionStorage.getItem('gt-intro') === '1'; } catch (e) {}
+if (!played && !location.search) {   // 분류에서 넘어온 경우는 생략
+  scene.classList.add('intro');
+  scene.style.setProperty('--count', DESSERTS.length);
+  try { sessionStorage.setItem('gt-intro', '1'); } catch (e) {}
 }
 
 // 식탁 위: 식탁 크기에 대한 % 위치
@@ -242,6 +252,24 @@ function moveTip(x, y) {
 function hideTip() {
   tip.classList.remove('show');
 }
+
+// 4-1. 분류 보기에서 넘어왔을 때: 그 묶음만 진하게, 나머지는 흐리게
+//      주소 예) index.html?장소=여행에서
+const params = new URLSearchParams(location.search);
+['장소', '감정', '시간'].forEach(function (key) {
+  const value = params.get(key);
+  if (!value) return;
+  scene.classList.add('focus');
+  document.querySelectorAll('.dish').forEach(function (el) {
+    const id = Number(el.getAttribute('href').split('=')[1]);
+    if (findDessert(id).groups[key] === value) el.classList.add('on');
+  });
+  const chip = document.createElement('a');
+  chip.className = 'focus-chip';
+  chip.href = 'index.html';
+  chip.innerHTML = key + ' · <b>' + value + '</b> 만 보는 중 <span>✕ 전체 보기</span>';
+  scene.parentNode.insertBefore(chip, scene);
+});
 
 // 5. 하단 색인 (타자기체 목록)
 const list = document.getElementById('indexList');
