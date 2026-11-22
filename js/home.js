@@ -129,10 +129,21 @@ function layoutFloor() {
 
   floorDishes.forEach(function (f, i) {
     const c = chosen[i];
-    const jx = ((f.d.id * 37) % 21 - 10) / 100 * step;   // 살짝 흐트러뜨리기
-    const jy = ((f.d.id * 53) % 21 - 10) / 100 * step;
-    f.el.style.left = (c.x + jx) + 'px';
-    f.el.style.top = (c.y + jy) + 'px';
+    // 지그재그: 하나는 식탁 쪽으로, 하나는 바깥쪽으로 번갈아 밀기
+    const dx = c.x - cx;
+    const dy = c.y - cy;
+    const dist = Math.hypot(dx, dy);
+    const push = (i % 2 === 0 ? 0.42 : -0.3) * step;
+    let x = c.x + dx / dist * push;
+    let y = c.y + dy / dist * push;
+    // 화면 밖으로 나가지 않게
+    x = Math.min(Math.max(x, step * 0.35), W - step * 0.35);
+    y = Math.min(Math.max(y, step * 0.35), H - step * 0.35);
+    // 살짝 흐트러뜨리기
+    x += ((f.d.id * 37) % 21 - 10) / 100 * step;
+    y += ((f.d.id * 53) % 21 - 10) / 100 * step;
+    f.el.style.left = x + 'px';
+    f.el.style.top = y + 'px';
     f.el.style.width = (T * f.d.size / 100) + 'px';
   });
 }
