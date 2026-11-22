@@ -118,16 +118,58 @@ img { display: block; max-width: 100%; }
 .table {
   --spin-time: 120s;   /* 한 바퀴 도는 데 걸리는 시간 (작을수록 빠름) */
 
-  position: relative;
-  width: min(92vw, 1000px);         /* 그림이 많아져서 식탁을 크게 */
+  position: absolute;                /* 화면 가운데에 놓음 (위치는 home.js가 정함) */
+  left: 50%;
+  top: 80px;
+  transform: translateX(-50%);
+  width: min(62vw, 860px);
   aspect-ratio: 1 / 1;
-  margin: 56px auto 48px;
   border-radius: 50%;
 
   /* 그림자는 돌지 않는 바깥 틀에 둠 (같이 돌면 그림자가 빙빙 돌아서) */
   box-shadow:
     0 18px 40px rgba(60, 30, 20, 0.22),
     0 4px 10px rgba(60, 30, 20, 0.12);
+}
+
+/* 화면 전체 무대: 식탁 + 주변 종이 위 그림들 */
+.scene {
+  position: relative;
+  margin: 24px 48px 48px;
+  min-height: min(62vw, 860px);
+}
+
+/* 식탁 밖 그림: 돌지 않고, 그림자를 옅게 */
+.dish.floor img { filter: drop-shadow(0 3px 3px rgba(60, 25, 15, 0.2)); }
+.dish.floor .num { animation: none; }
+
+/* 좁은 화면: 식탁 아래에 그림을 차례로 늘어놓기 */
+.scene.stacked {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 8px;
+  margin: 24px 16px 40px;
+}
+
+.scene.stacked .table {
+  position: relative;
+  left: auto;
+  top: auto !important;
+  transform: none;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.scene.stacked .dish.floor {
+  position: relative;
+  transform: none;
+  width: 28%;
+}
+
+.scene.stacked .dish.floor img {
+  height: 100px;              /* 길쭉한 그림도 같은 높이로 */
+  object-fit: contain;
 }
 
 /* 돌아가는 식탁보 (체크무늬 + 디저트 + 연결선) */
